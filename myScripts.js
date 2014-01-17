@@ -2,45 +2,24 @@
  * What percentage of the page was viewed
 **/
 
-// function alertSize() {
-var myWidth = 0, myHeight = 0;
-if( typeof( window.innerWidth ) == 'number' ) {
-  //Non-IE
-  myWidth = window.innerWidth;
-  myHeight = window.innerHeight;
-} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
-  //IE 6+ in 'standards compliant mode'
-  myWidth = document.documentElement.clientWidth;
-  myHeight = document.documentElement.clientHeight;
-} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
-  //IE 4 compatible
-  myWidth = document.body.clientWidth;
-  myHeight = document.body.clientHeight;
-}
-//   window.alert( 'Width = ' + myWidth );
-//   window.alert( 'Height = ' + myHeight );
-// }
+//Make life easier//
+var D = document, W = window;
 
-// function getScrollXY() {
-  var scrOfX = 0, scrOfY = 0;
-  if( typeof( window.pageYOffset ) == 'number' ) {
-    //Netscape compliant
-    scrOfY = window.pageYOffset;
-    scrOfX = window.pageXOffset;
-  } else if( document.body && ( document.body.scrollLeft || document.body.scrollTop ) ) {
-    //DOM compliant
-    scrOfY = document.body.scrollTop;
-    scrOfX = document.body.scrollLeft;
-  } else if( document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop ) ) {
-    //IE6 standards compliant mode
-    scrOfY = document.documentElement.scrollTop;
-    scrOfX = document.documentElement.scrollLeft;
-  }
-//   return [ scrOfX, scrOfY ];
-// }
+//size of browser window //
+var browerWidth = W.innerWidth, browserHeight = W.innerHeight;
+
+//size of document //
+var DocWidth = D.body.clientWidth, DocHeight = D.body.clientHeight;
+
+//scroll X Y
+var scrOfY = W.pageYOffset;
+if ((W.pageXOffset === 0) && (W.innerWidth === D.body.clientWidth)) {
+  scrOfX = W.innerWidth;
+} else {
+  scrOfX = W.innerWidth + W.pageXOffset - D.body.style.margin  ;
+}
 
 function pageViewed () {
-	var pctPageViewed = Math.round((scrOfX * scrOfY) / (myWidth * myHeight))*1000)/100;
-return [ pctPageViewed ];
-	// window.alert( "You have viewed " + pctPageViewed + " of this page.");	
+	var pctPageViewed = ((scrOfY + browserHeight) * scrOfX ) / ( DocWidth * DocHeight);
+	alert( "You have viewed " + pctPageViewed + "% of this page.");	
 }
